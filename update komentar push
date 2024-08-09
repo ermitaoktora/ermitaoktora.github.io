@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Jalzae</title>
+
+  <style>
+    body {
+      text-align: center;
+      padding: 8px;
+    }
+
+    nav>ul {
+      display: flex;
+      justify-content: center;
+    }
+
+    nav>ul>li {
+      list-style: none;
+      min-width: 100px;
+      border: 1px solid black;
+      margin: 4px;
+      padding: 4px;
+      border-radius: 20px;
+      cursor: pointer;
+    }
+
+    nav>ul>li:hover {
+      background: black;
+      color: white;
+      border: none;
+    }
+
+    .card {
+      border: 3px dotted black;
+      margin-bottom: 12px;
+    }
+
+    .card>p {
+      text-align: left;
+      padding-left: 16px
+    }
+
+    form {
+      margin-bottom: 16px;
+
+    }
+
+    #daftarKomentar {
+      text-align: left;
+    }
+
+    #daftarKomentar>li>span {
+      font-weight: 700;
+    }
+
+    .formGroup>button {
+      background: cyan;
+      color: white;
+      border: none !important;
+      padding: 8px;
+      border-radius: 12px;
+      padding: 4px;
+      min-width: 20%;
+    }
+  </style>
+</head>
+
+<body>
+  <h1>Website Jalz</h1>
+
+  <nav>
+    <ul>
+      <li>Tentang</li>
+      <li>Form</li>
+      <li>Komentar</li>
+    </ul>
+  </nav>
+
+  <div class="card">
+    <h2>Tentang</h2>
+
+    <p>A Programmer which interest in code,cultural and also interest to you. lets be friend founder @EBAS-ID</p>
+  </div>
+
+  <div class="card">
+    <h2>Form</h2>
+    <form method="post" action="#" id="formAdd">
+
+      <div class="formGroup">
+        <label for="nama">Nama</label>
+        <input type="text" placeholder="Masukan nama kamu" id="nama" />
+      </div>
+
+      <div class="formGroup">
+        <label for="komentar">Komentar</label>
+        <textarea type="text" placeholder="Masukan komentar kamu" id="komentar"></textarea>
+      </div>
+
+      <div class="formGroup">
+        <button type="submit">Kirim Pesan</button>
+      </div>
+
+    </form>
+  </div>
+
+  <div class="card">
+    <h2>Komentar</h2>
+    <ul id="daftarKomentar">
+    
+    </ul>
+  </div>
+
+  <script>
+    const formAdd = document.getElementById('formAdd')
+    const nama = document.getElementById('nama')
+    const komentar = document.getElementById('komentar')
+    const daftarKomentar = document.getElementById('daftarKomentar')
+
+    function read(){
+      const data=JSON.parse(localStorage.getItem('komentar') ?? '[]')
+
+      for(let item of data){
+        daftarKomentar.innerHTML += ` <li><span>${item.nama}</span> : ${item.komentar}</li>`
+      }
+    }
+
+    function kirim(nama,komentar){
+      const data=JSON.parse(localStorage.getItem('komentar') ?? '[]')
+      data.push({
+        nama,
+        komentar
+      })
+      localStorage.setItem('komentar',JSON.stringify(data))
+    }
+
+    formAdd.onsubmit = (e) => {
+      e.preventDefault()
+      try {
+        if(nama.value==''){
+          alert('Nama kosong')
+          return
+        }
+
+        if(komentar.value==''){
+          alert('komentar kosong')
+          return
+        }
+
+        daftarKomentar.innerHTML += ` <li><span>${nama.value}</span> : ${komentar.value}</li>`
+        kirim(nama.value,komentar.value)
+
+        nama.value=''
+        komentar.value=''
+      } catch (err) {
+        alert("Terimakasih telah mengirim pesan")
+
+      }finally {
+
+      }
+    }
+
+    (()=>read())()
+
+  </script>
+</body>
+
+</html>
